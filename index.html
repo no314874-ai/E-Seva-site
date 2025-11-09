@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>E-Seva — Public Services Portal</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="E-Seva: Simplifying access to public services." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { brand:{ DEFAULT:'#0b5cff', dark:'#093fb3', light:'#e6eeff'}, accent:{ DEFAULT:'#16a34a'} }, borderRadius:{'2xl':'1rem'}}}};
+  </script>
+  <style> html{scroll-behavior:smooth;} .container{max-width:72rem;} .modal[open]{display:block;} .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);} .modal__card{max-width:40rem;width:100%;}</style>
+</head>
+<body class="bg-white text-gray-900">
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg width="28" height="28" viewBox="0 0 24 24" class="text-brand"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b5cff"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs><rect rx="5" width="24" height="24" fill="url(#g)"/><path d="M7 13h5a3 3 0 0 1 0 6H7m0-6V5h6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="font-semibold text-lg"><span data-i18n="brand">E-Seva</span></div>
+      </div>
+      <nav class="hidden md:flex gap-2 text-sm">
+        <a href="#home"     class="px-3 py-2 rounded-xl hover:bg-gray-100" data-i18n="nav.home">Home</a>
+        <a href="#services" class="px-3 py-2 rounded-xl hover:bg-gray-100" data-i18n="nav.services">Services</a>
+        <a href="#cases"    class="px-3 py-2 rounded-xl hover:bg-gray-100" data-i18n="nav.cases">Case Studies</a>
+        <a href="#about"    class="px-3 py-2 rounded-xl hover:bg-gray-100" data-i18n="nav.about">About</a>
+        <a href="#contact"  class="px-3 py-2 rounded-xl hover:bg-gray-100" data-i18n="nav.contact">Contact</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <select id="lang" class="border rounded-xl px-3 py-2 text-sm">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="bn">বাংলা</option>
+          <option value="mr">मराठी</option>
+          <option value="te">తెలుగు</option>
+        </select>
+        <button id="lowBtn" class="text-sm px-3 py-2 rounded-xl border" data-i18n="lowImg">Low-bandwidth images</button>
+      </div>
+    </div>
+  </header>
+
+  <section id="home" class="relative overflow-hidden">
+    <img id="heroImg" alt="Hero" class="w-full h-[420px] object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-t from-white via-white/60 to-transparent"></div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="absolute bottom-10 max-w-3xl">
+        <h1 class="text-4xl md:text-5xl font-bold mb-3">
+          <span data-i18n="brand">E-Seva</span>:
+          <span class="text-brand" data-i18n="tagline">Simplifying access to public services.</span>
+        </h1>
+        <p class="text-gray-600 mb-4" data-i18n="heroLead">One citizen app for certificates, licenses, pensions, utilities and more — 24×7, paper-less, queue-less.</p>
+        <div class="flex gap-2">
+          <a href="#services" class="px-4 py-2 rounded-2xl bg-brand text-white" data-i18n="cta">Get Started</a>
+          <a href="#about" class="px-4 py-2 rounded-2xl border" data-i18n="learn">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
+    <div class="grid md:grid-cols-4 gap-4">
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="font-medium mb-2" data-i18n="quick.track">Track Status</div>
+        <div class="flex gap-2">
+          <input id="trackId" class="border rounded-xl px-3 py-2 flex-1" placeholder="ESV-2025-000123" />
+          <button class="px-3 py-2 rounded-xl bg-brand text-white text-sm" onclick="alertTrack()">OK</button>
+        </div>
+      </div>
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="font-medium mb-2" data-i18n="quick.pay">Pay Bills</div>
+        <div class="flex gap-2">
+          <input id="payId" class="border rounded-xl px-3 py-2 flex-1" placeholder="Consumer ID" />
+          <button class="px-3 py-2 rounded-xl bg-brand text-white text-sm" onclick="alert('Payment gateway demo')">Pay</button>
+        </div>
+      </div>
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="font-medium mb-2" data-i18n="quick.apply">Apply Online</div>
+        <div class="flex gap-2">
+          <select id="quickService" class="border rounded-xl px-3 py-2 flex-1">
+            <option value="land">Land Records (RoR)</option>
+            <option value="trade">Trade & Shop License</option>
+            <option value="scholarship">Scholarship</option>
+          </select>
+          <button class="px-3 py-2 rounded-xl border text-sm" onclick="openForm(document.getElementById('quickService').value)">Go</button>
+        </div>
+      </div>
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="font-medium mb-2" data-i18n="quick.download">Download Receipt</div>
+        <div class="flex gap-2">
+          <input id="receiptId" class="border rounded-xl px-3 py-2 flex-1" placeholder="Receipt / Application ID" />
+          <button class="px-3 py-2 rounded-xl bg-brand text-white text-sm" onclick="downloadSavedReceipt()">Get</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="services" class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <h2 class="text-2xl font-semibold mb-4" data-i18n="servicesTitle">Popular Services</h2>
+    <div id="servicesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    <div class="grid md:grid-cols-3 gap-4 mt-8">
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="text-lg font-semibold">Faster Turnaround</div>
+        <div class="text-sm text-gray-600">Track progress in real time with SMS/WhatsApp updates.</div>
+      </div>
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="text-lg font-semibold">Secure Payments</div>
+        <div class="text-sm text-gray-600">UPI, cards, netbanking with instant e-receipt.</div>
+      </div>
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="text-lg font-semibold">Paperless</div>
+        <div class="text-sm text-gray-600">eSign & cloud storage for documents.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cases" class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <h2 class="text-2xl font-semibold mb-4" data-i18n="casesTitle">Inclusion in Action</h2>
+    <div class="grid md:grid-cols-2 gap-6 items-start">
+      <img id="caseImg" alt="Case" class="w-full h-64 object-cover rounded-2xl" />
+      <div>
+        <p class="text-gray-600 mb-3" data-i18n="caseBlurb">Pilots in low-connectivity blocks saw 40% engagement growth in 6 months with local helpers and vernacular onboarding.</p>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-2xl border p-4 text-center"><div class="text-2xl font-bold">40%</div><div class="text-xs text-gray-600">Engagement ↑</div></div>
+          <div class="rounded-2xl border p-4 text-center"><div class="text-2xl font-bold">6 mo</div><div class="text-xs text-gray-600">Pilot</div></div>
+          <div class="rounded-2xl border p-4 text-center"><div class="text-2xl font-bold">9</div><div class="text-xs text-gray-600">Languages</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <h2 class="text-2xl font-semibold mb-4" data-i18n="aboutTitle">Built with AIDA + PRACE</h2>
+    <p class="text-gray-600 max-w-3xl" data-i18n="aboutText">
+      We capture Attention with clarity, grow Interest via demos, convert to Action with guidance, ensure Completion with step-by-step flows, and loop in Evaluation for continuous improvement.
+    </p>
+    <div class="grid md:grid-cols-2 gap-4 mt-6">
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="font-semibold mb-2">AIDA</div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-3 py-1 rounded-xl border">Attention</span>
+          <span class="px-3 py-1 rounded-xl border">Interest</span>
+          <span class="px-3 py-1 rounded-xl border">Desire</span>
+          <span class="px-3 py-1 rounded-xl border">Action</span>
+        </div>
+      </div>
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="font-semibold mb-2">PRACE</div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-3 py-1 rounded-xl border">Problem</span>
+          <span class="px-3 py-1 rounded-xl border">Reaction</span>
+          <span class="px-3 py-1 rounded-xl border">Action</span>
+          <span class="px-3 py-1 rounded-xl border">Completion</span>
+          <span class="px-3 py-1 rounded-xl border">Evaluation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <h2 class="text-2xl font-semibold mb-1" data-i18n="contactTitle">Contact & Support</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="space-y-3">
+          <input placeholder="" data-i18n-placeholder="form.name" class="border rounded-xl px-3 py-2 w-full" />
+          <div class="grid grid-cols-2 gap-3">
+            <input placeholder="" data-i18n-placeholder="form.phone" class="border rounded-xl px-3 py-2 w-full" />
+            <input placeholder="" data-i18n-placeholder="form.email" class="border rounded-xl px-3 py-2 w-full" />
+          </div>
+          <textarea rows="5" placeholder="" data-i18n-placeholder="form.message" class="border rounded-xl px-3 py-2 w-full"></textarea>
+          <button class="px-4 py-2 bg-brand text-white rounded-2xl" data-i18n="form.send">Send Message</button>
+        </div>
+      </div>
+      <div class="rounded-2xl border shadow-sm p-4">
+        <div class="space-y-3 text-sm">
+          <div class="border rounded-xl p-3">
+            <div class="font-medium mb-1">How to track my application?</div>
+            <div class="text-gray-600">Use quick actions on Home.</div>
+          </div>
+          <div class="border rounded-xl p-3">
+            <div class="font-medium mb-1">What payment modes are supported?</div>
+            <div class="text-gray-600">UPI/cards/netbanking (demo).</div>
+          </div>
+          <div class="border rounded-xl p-3">
+            <div class="font-medium mb-1">How do I change language?</div>
+            <div class="text-gray-600">Use the header language selector.</div>
+          </div>
+        </div>\n      </div>\n    </div>\n  </section>\n\n  <!-- Modals -->\n  <div class=\"modal\" id=\"modal-land\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"landTitle\">\n    <div class=\"h-full flex items-center justify-center p-4\">\n      <div class=\"modal__card bg-white rounded-2xl shadow-xl border\">\n        <div class=\"p-4 border-b flex items-center justify-between\">\n          <h3 id=\"landTitle\" class=\"text-lg font-semibold\">Apply – Land Records (RoR)</h3>\n          <button class=\"p-2 rounded-lg hover:bg-gray-100\" onclick=\"closeForm('land')\">✕</button>\n        </div>\n        <form class=\"p-4 space-y-3\" id=\"form-land\" onsubmit=\"return handleSubmit(event,'land')\">\n          <div class=\"grid md:grid-cols-2 gap-3\">\n            <div><label class=\"text-sm\">Applicant Name*</label><input name=\"name\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Aadhaar (12 digits)*</label><input name=\"aadhaar\" required pattern=\"\\d{12}\" class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Mobile (10 digits)*</label><input name=\"mobile\" required pattern=\"\\d{10}\" class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">District*</label><input name=\"district\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Survey No.*</label><input name=\"survey\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n          </div>\n          <div class=\"grid md:grid-cols-2 gap-3\">\n            <div><label class=\"text-sm\">Address Proof (PDF/JPG/PNG)*</label><input name=\"addrProof\" type=\"file\" accept=\".pdf,.jpg,.jpeg,.png\" required class=\"block w-full\"/></div>\n            <div><label class=\"text-sm\">ID Proof (PDF/JPG/PNG)*</label><input name=\"idProof\" type=\"file\" accept=\".pdf,.jpg,.jpeg,.png\" required class=\"block w-full\"/></div>\n          </div>\n          <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" required/> I confirm that the information provided is true.</label>\n          <div class=\"flex items-center gap-2 pt-2\">\n            <button class=\"px-4 py-2 rounded-2xl bg-brand text-white\" type=\"submit\">Submit</button>\n            <button class=\"px-4 py-2 rounded-2xl border\" type=\"button\" onclick=\"closeForm('land')\">Cancel</button>\n          </div>\n        </form>\n        <div id=\"success-land\" class=\"hidden p-4 border-t\">\n          <div class=\"text-accent font-medium\">Submitted successfully!</div>\n          <div class=\"text-sm text-gray-700\">Application ID: <span class=\"font-mono\" id=\"id-land\"></span></div>\n          <div class=\"mt-2 flex gap-2\">\n            <a id=\"dl-land\" class=\"px-3 py-2 rounded-xl bg-brand text-white\" download>Download Receipt</a>\n            <button class=\"px-3 py-2 rounded-xl border\" onclick=\"closeForm('land')\">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"modal\" id=\"modal-trade\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"tradeTitle\">\n    <div class=\"h-full flex items-center justify-center p-4\">\n      <div class=\"modal__card bg-white rounded-2xl shadow-xl border\">\n        <div class=\"p-4 border-b flex items-center justify-between\">\n          <h3 id=\"tradeTitle\" class=\"text-lg font-semibold\">Apply – Trade & Shop License</h3>\n          <button class=\"p-2 rounded-lg hover:bg-gray-100\" onclick=\"closeForm('trade')\">✕</button>\n        </div>\n        <form class=\"p-4 space-y-3\" id=\"form-trade\" onsubmit=\"return handleSubmit(event,'trade')\">\n          <div class=\"grid md:grid-cols-2 gap-3\">\n            <div><label class=\"text-sm\">Business Name*</label><input name=\"bizName\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Owner Name*</label><input name=\"owner\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Email*</label><input name=\"email\" type=\"email\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Mobile (10 digits)*</label><input name=\"mobile\" required pattern=\"\\d{10}\" class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div class=\"md:col-span-2\"><label class=\"text-sm\">Address*</label><input name=\"address\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Category*</label>\n              <select name=\"category\" required class=\"border rounded-xl px-3 py-2 w-full\">\n                <option value=\"\">Select…</option>\n                <option>Retail</option><option>Food</option><option>Services</option><option>Manufacturing</option>\n              </select>\n            </div>\n          </div>\n          <div class=\"grid md:grid-cols-3 gap-3\">\n            <div><label class=\"text-sm\">Registration Cert*</label><input name=\"regCert\" type=\"file\" accept=\".pdf,.jpg,.jpeg,.png\" required class=\"block w-full\"/></div>\n            <div><label class=\"text-sm\">GST Cert (optional)</label><input name=\"gst\" type=\"file\" accept=\".pdf,.jpg,.jpeg,.png\" class=\"block w-full\"/></div>\n            <div><label class=\"text-sm\">Shop Photo*</label><input name=\"shopPhoto\" type=\"file\" accept=\".jpg,.jpeg,.png\" required class=\"block w-full\"/></div>\n          </div>\n          <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" required/> I accept the terms & compliance.</label>\n          <div class=\"flex items-center gap-2 pt-2\">\n            <button class=\"px-4 py-2 rounded-2xl bg-brand text-white\" type=\"submit\">Submit</button>\n            <button class=\"px-4 py-2 rounded-2xl border\" type=\"button\" onclick=\"closeForm('trade')\">Cancel</button>\n          </div>\n        </form>\n        <div id=\"success-trade\" class=\"hidden p-4 border-t\">\n          <div class=\"text-accent font-medium\">Submitted successfully!</div>\n          <div class=\"text-sm text-gray-700\">Application ID: <span class=\"font-mono\" id=\"id-trade\"></span></div>\n          <div class=\"mt-2 flex gap-2\">\n            <a id=\"dl-trade\" class=\"px-3 py-2 rounded-xl bg-brand text-white\" download>Download Receipt</a>\n            <button class=\"px-3 py-2 rounded-xl border\" onclick=\"closeForm('trade')\">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"modal\" id=\"modal-scholarship\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"schTitle\">\n    <div class=\"h-full flex items-center justify-center p-4\">\n      <div class=\"modal__card bg-white rounded-2xl shadow-xl border\">\n        <div class=\"p-4 border-b flex items-center justify-between\">\n          <h3 id=\"schTitle\" class=\"text-lg font-semibold\">Apply – Scholarship</h3>\n          <button class=\"p-2 rounded-lg hover:bg-gray-100\" onclick=\"closeForm('scholarship')\">✕</button>\n        </div>\n        <form class=\"p-4 space-y-3\" id=\"form-scholarship\" onsubmit=\"return handleSubmit(event,'scholarship')\">\n          <div class=\"grid md:grid-cols-2 gap-3\">\n            <div><label class=\"text-sm\">Student Name*</label><input name=\"name\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">DOB (DD/MM/YYYY)*</label><input name=\"dob\" required pattern=\"\\d{2}/\\d{2}/\\d{4}\" class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Email*</label><input name=\"email\" type=\"email\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Mobile (10 digits)*</label><input name=\"mobile\" required pattern=\"\\d{10}\" class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Course*</label><input name=\"course\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Institution*</label><input name=\"institution\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n            <div><label class=\"text-sm\">Family Income (₹)*</label><input name=\"income\" type=\"number\" min=\"0\" required class=\"border rounded-xl px-3 py-2 w-full\"/></div>\n          </div>\n          <div class=\"grid md:grid-cols-2 gap-3\">\n            <div><label class=\"text-sm\">Marksheet (PDF/JPG/PNG)*</label><input name=\"marks\" type=\"file\" accept=\".pdf,.jpg,.jpeg,.png\" required class=\"block w-full\"/></div>\n            <div><label class=\"text-sm\">Bank Passbook (PDF/JPG/PNG)*</label><input name=\"bank\" type=\"file\" accept=\".pdf,.jpg,.jpeg,.png\" required class=\"block w-full\"/></div>\n          </div>\n          <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" required/> I certify the details are correct.</label>\n          <div class=\"flex items-center gap-2 pt-2\">\n            <button class=\"px-4 py-2 rounded-2xl bg-brand text-white\" type=\"submit\">Submit</button>\n            <button class=\"px-4 py-2 rounded-2xl border\" type=\"button\" onclick=\"closeForm('scholarship')\">Cancel</button>\n          </div>\n        </form>\n        <div id=\"success-scholarship\" class=\"hidden p-4 border-t\">\n          <div class=\"text-accent font-medium\">Submitted successfully!</div>\n          <div class=\"text-sm text-gray-700\">Application ID: <span class=\"font-mono\" id=\"id-scholarship\"></span></div>\n          <div class=\"mt-2 flex gap-2\">\n            <a id=\"dl-scholarship\" class=\"px-3 py-2 rounded-xl bg-brand text-white\" download>Download Receipt</a>\n            <button class=\"px-3 py-2 rounded-xl border\" onclick=\"closeForm('scholarship')\">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <footer class=\"border-t mt-12\">\n    <div class=\"container mx-auto px-4 sm:px-6 lg:px-8 py-8 grid md:grid-cols-3 gap-6\">\n      <div>\n        <div class=\"font-semibold mb-1\"><span data-i18n=\"brand\">E-Seva</span></div>\n        <p class=\"text-sm text-gray-600\" data-i18n=\"tagline\">Simplifying access to public services.</p>\n      </div>\n      <div>\n        <div class=\"font-semibold mb-1\">Links</div>\n        <ul class=\"text-sm text-gray-600 space-y-1\">\n          <li><a href=\"#services\" class=\"hover:underline\" data-i18n=\"nav.services\">Services</a></li>\n          <li><a href=\"#about\" class=\"hover:underline\" data-i18n=\"nav.about\">About</a></li>\n          <li><a href=\"#contact\" class=\"hover:underline\" data-i18n=\"nav.contact\">Contact</a></li>\n        </ul>\n      </div>\n      <div class=\"text-xs text-gray-600\">© <span id=\"year\"></span> <span data-i18n=\"brand\">E-Seva</span>. All rights reserved.</div>\n    </div>\n  </footer>\n\n  <script>\n    const STR = {\n      en:{brand:\"E-Seva\",tagline:\"Simplifying access to public services.\",nav:{home:\"Home\",services:\"Services\",cases:\"Case Studies\",about:\"About\",contact:\"Contact\"},heroLead:\"One citizen app for certificates, licenses, pensions, utilities and more — 24×7, paper-less, queue-less.\",cta:\"Get Started\",learn:\"Learn More\",quick:{track:\"Track Status\",pay:\"Pay Bills\",apply:\"Apply Online\",download:\"Download Receipt\"},servicesTitle:\"Popular Services\",services:[\"Land Records (RoR)\",\"Trade & Shop License\",\"Scholarship\",\"Utility Payments\",\"Pension & Social Welfare\",\"Grievance & RTI\"],casesTitle:\"Inclusion in Action\",caseBlurb:\"Pilots in low-connectivity blocks saw 40% engagement growth in 6 months with local helpers and vernacular onboarding.\",aboutTitle:\"Built with AIDA + PRACE\",aboutText:\"We capture Attention with clarity, grow Interest via demos, convert to Action with guidance, ensure Completion with step-by-step flows, and loop in Evaluation for continuous improvement.\",contactTitle:\"Contact & Support\",form:{name:\"Full Name\",phone:\"Phone\",email:\"Email\",message:\"Your message\",send:\"Send Message\"},lowImg:\"Low-bandwidth images\"},\n      hi:{brand:\"ई-सेवा\",tagline:\"सरकारी सेवाओं तक आसान पहुँच।\",nav:{home:\"होम\",services:\"सेवाएँ\",cases:\"केस स्टडी\",about:\"हमारे बारे में\",contact:\"संपर्क\"},heroLead:\"सर्टिफिकेट, लाइसेंस, पेंशन, यूटिलिटी आदि—एक ही ऐप में 24×7।\",cta:\"शुरू करें\",learn:\"और जानें\",quick:{track:\"स्थिति देखें\",pay:\"बिल भुगतान\",apply:\"ऑनलाइन आवेदन\",download:\"रसीद डाउनलोड\"},servicesTitle:\"लोकप्रिय सेवाएँ\",services:[\"भूमि अभिलेख\",\"व्यापार लाइसेंस\",\"छात्रवृत्ति\",\"यूटिलिटी भुगतान\",\"पेंशन व कल्याण\",\"शिकायत/RTI\"],casesTitle:\"समावेशन के उदाहरण\",caseBlurb:\"6 माह में 40% सहभागिता वृद्धि।\",aboutTitle:\"AIDA + PRACE आधारित\",aboutText:\"ध्यान→रुचि→कार्रवाई→पूर्णता→मूल्यांकन।\",contactTitle:\"संपर्क व सहायता\",form:{name:\"पूरा नाम\",phone:\"फोन\",email:\"ईमेल\",message:\"संदेश\",send:\"संदेश भेजें\"},lowImg:\"कम-डेटा चित्र\"},\n      bn:{brand:\"ই-সেবা\",tagline:\"সরকারি পরিষেবায় সহজ প্রবেশ।\",nav:{home:\"হোম\",services:\"পরিষেবা\",cases:\"কেস স্টাডি\",about:\"সম্পর্কে\",contact:\"যোগাযোগ\"},heroLead:\"সার্টিফিকেট, লাইসেন্স, পেনশন, ইউটিলিটি—সব এক অ্যাপে, ২৪×৭।\",cta:\"শুরু করুন\",learn:\"আরও জানুন\",quick:{track:\"স্ট্যাটাস দেখুন\",pay:\"বিল পরিশোধ\",apply:\"অনলাইনে আবেদন\",download:\"রসিদ ডাউনলোড\"},servicesTitle:\"জনপ্রিয় পরিষেবা\",services:[\"ভূমি রেকর্ড\",\"ট্রেড লাইসেন্স\",\"স্কলারশিপ\",\"ইউটিলিটি বিল\",\"পেনশন\",\"অভিযোগ/RTI\"],casesTitle:\"অন্তর্ভুক্তির উদাহরণ\",caseBlurb:\"৬ মাসে ৪০% বেশি অংশগ্রহণ।\",aboutTitle:\"AIDA + PRACE\",aboutText:\"মনোযোগ→রুচি→কার্য→সম্পূর্ণতা→মূল্যায়ন।\",contactTitle:\"যোগাযোগ ও সাপোর্ট\",form:{name:\"পূর্ণ নাম\",phone:\"ফোন\",email:\"ইমেল\",message:\"বার্তা\",send:\"বার্তা পাঠান\"},lowImg:\"লো-ডাটা ছবি\"},\n      mr:{brand:\"ई-सेवा\",tagline:\"शासकीय सेवांपर्यंत सुलभ प्रवेश.\",nav:{home:\"मुख्यपृष्ठ\",services:\"सेवा\",cases:\"केस स्टडी\",about:\"माहिती\",contact:\"संपर्क\"},heroLead:\"प्रमाणपत्र, परवाने, पेन्शन, युटिलिटी—एकाच ॲपमध्ये 24×7.\",cta:\"सुरू करा\",learn:\"अधिक जाणून घ्या\",quick:{track:\"स्थिती\",pay:\"बिल भरा\",apply:\"ऑनलाइन अर्ज\",download:\"पावती डाउनलोड\"},servicesTitle:\"लोकप्रिय सेवा\",services:[\"भूमि नोंद\",\"व्यवसाय परवाना\",\"शिष्यवृत्ती\",\"युटिलिटी पेमेंट\",\"पेन्शन\",\"तक्रार/RTI\"],casesTitle:\"समावेशन\",caseBlurb:\"६ महिन्यांत ४०% एंगेजमेंट.\",aboutTitle:\"AIDA + PRACE\",aboutText:\"ध्यान→रस→कृती→पूर्णता→मूल्यांकन.\",contactTitle:\"संपर्क व मदत\",form:{name:\"पूर्ण नाव\",phone:\"फोन\",email:\"ईमेल\",message:\"संदेश\",send:\"मेसेज पाठवा\"},lowImg:\"कमी-डेटा प्रतिमा\"},\n      te:{brand:\"ఈ-సేవ\",tagline:\"ప్రభుత్వ సేవలకు సులభ ప్రాప్యత.\",nav:{home:\"హోమ్\",services:\"సేవలు\",cases:\"కేస్ స్టడీస్\",about:\"గురించి\",contact:\"సంప్రదించండి\"},heroLead:\"సర్టిఫికెట్స్, లైసెన్సులు, పెన్షన్, యుటిలిటీలను—ఒకే యాప్‌లో 24×7.\",cta:\"ప్రారంభించండి\",learn:\"మరింత తెలుసుకోండి\",quick:{track:\"స్థితి తెలుసుకోండి\",pay:\"బిల్లు చెల్లించండి\",apply:\"ఆన్‌లైన్ అప్లై\",download:\"రసీదు డౌన్‌లోడ్\"},servicesTitle:\"ప్రచలిత సేవలు\",services:[\"భూమి రికార్డులు\",\"ట్రేడ్ లైసెన్స్\",\"స్కాలర్‌షిప్\",\"యుటిలిటీ పేమెంట్స్\",\"పెన్షన్\",\"ఫిర్యాదు/RTI\"],casesTitle:\"సమావేశం\",caseBlurb:\"6 నెలల్లో 40% ఎంగేజ్‌మెంట్.\",aboutTitle:\"AIDA + PRACE\",aboutText:\"ధ్యాస→ఆసక్తి→చర్య→పూర్తి→మూల్యాంకనం.\",contactTitle:\"సంప్రదింపు & సహాయం\",form:{name:\"పూర్తి పేరు\",phone:\"ఫోన్\",email:\"ఈమెయిల్\",message:\"మీ సందేశం\",send:\"సందేశం పంపండి\"},lowImg:\"లో-డేటా చిత్రాలు\"}\n    };\n\n    const IMG = { hero:\"https://images.unsplash.com/photo-1495020689067-958852a7765e?w=1200&q=60&auto=format&fit=crop\", services:[\"https://images.unsplash.com/photo-1554224155-1696413565d3?w=800&q=60&auto=format&fit=crop\",\"https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?w=800&q=60&auto=format&fit=crop\",\"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=60&auto=format&fit=crop\",\"https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&q=60&auto=format&fit=crop\",\"https://images.unsplash.com/photo-1556740749-887f6717d7e4?w=800&q=60&auto=format&fit=crop\",\"https://images.unsplash.com/photo-1529101091764-c3526daf38fe?w=800&q=60&auto=format&fit=crop\"], case:\"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1000&q=60&auto=format&fit=crop\", tiny:\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='3'%3E%3Crect width='4' height='3' fill='%23eaeaea'/%3E%3C/svg%3E\" };\n\n    const el = (s, r=document)=> r.querySelector(s); const els = (s,r=document)=>[...r.querySelectorAll(s)]; let currentLang='en'; let low=false;\n\n    function setLang(lang){ currentLang=lang; const d=STR[lang]; els('[data-i18n]').forEach(n=>{const p=n.getAttribute('data-i18n'); n.textContent=get(d,p)||n.textContent;}); els('[data-i18n-placeholder]').forEach(n=>{const p=n.getAttribute('data-i18n-placeholder'); n.placeholder=get(d,p)||n.placeholder;}); buildServices(d.services); }\n    function get(o,p){ return p.split('.').reduce((x,k)=>(x||{})[k],o); }\n\n    function buildServices(list){ const grid=el('#servicesGrid'); grid.innerHTML=''; const map={\"Land Records (RoR)\":\"land\",\"भूमि अभिलेख\":\"land\",\"ভূমি রেকর্ড\":\"land\",\"भूमि नोंद\":\"land\",\"భూమి రికార్డులు\":\"land\",\"Trade & Shop License\":\"trade\",\"व्यापार लाइसेंस\":\"trade\",\"ট্রেড লাইসেন্স\":\"trade\",\"व्यवसाय परवाना\":\"trade\",\"ట్రేడ్ లైసెన్స్\":\"trade\",\"Scholarship\":\"scholarship\",\"छात्रवृत्ति\":\"scholarship\",\"স্কলারশিপ\":\"scholarship\",\"शिष्यवृत्ती\":\"scholarship\",\"స్కాలర్‌షిప్\":\"scholarship\"}; list.forEach((label,i)=>{const key=map[label]||'land'; const wrap=document.createElement('div'); wrap.className='rounded-2xl border shadow-sm overflow-hidden'; wrap.innerHTML=`<img src=\"${IMG.services[i%IMG.services.length]}\" alt=\"${label}\" class=\"w-full h-40 object-cover\"><div class='p-4'><div class='font-medium mb-2'>${label}</div><div class='flex gap-2'><button class='px-3 py-2 rounded-xl bg-brand text-white text-sm' onclick=\"openForm('${key}')\">Apply</button><button class='px-3 py-2 rounded-xl border text-sm' onclick=\"alert('Learn more (demo)')\">Learn</button></div></div>`; grid.appendChild(wrap); }); }\n\n    function setImages(){ el('#heroImg').src = low ? IMG.tiny : IMG.hero; el('#caseImg').src = low ? IMG.tiny : IMG.case; }\n\n    function openForm(key){ el(`#modal-${key}`).setAttribute('open',''); el(`#modal-${key}`).scrollTop = 0; }\n    function closeForm(key){ el(`#modal-${key}`).removeAttribute('open'); }\n\n    function handleSubmit(e,key){ e.preventDefault(); const f=e.target; if(!f.checkValidity()){ f.reportValidity(); return false;} const data=new FormData(f); const obj={}; data.forEach((v,k)=>{ obj[k]= (v instanceof File) ? (v.name||'(file)') : (''+v).trim();}); const id=`ESV-${key.toUpperCase()}-${Date.now()}`; obj.applicationId=id; obj.service=key; obj.createdAt=new Date().toISOString(); try{ const all=JSON.parse(localStorage.getItem('eseva_apps')||'[]'); all.push(obj); localStorage.setItem('eseva_apps', JSON.stringify(all)); }catch(err){}\n      const receipt={ agency:'E-Seva', service:key, applicationId:id, applicant: obj.name||obj.owner||obj.bizName||obj['name'], time:new Date().toLocaleString(), summary:obj}; const blob=new Blob([JSON.stringify(receipt,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); el(`#id-${key}`).textContent=id; const dl=el(`#dl-${key}`); dl.href=url; dl.download=`${id}.json`; el(`#success-${key}`).classList.remove('hidden'); f.reset(); return false; }\n\n    function downloadSavedReceipt(){ const id=(el('#receiptId').value||'').trim(); if(!id) return alert('Enter a Receipt/Application ID.'); const all=JSON.parse(localStorage.getItem('eseva_apps')||'[]'); const found=all.find(x=>x.applicationId===id); if(!found) return alert('No record found for that ID (saved in this browser).'); const receipt={ agency:'E-Seva', service:found.service, applicationId:found.applicationId, applicant:found.name||found.owner||found.bizName||found['name'], time:new Date(found.createdAt).toLocaleString(), summary:found}; const blob=new Blob([JSON.stringify(receipt,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`${found.applicationId}.json`; a.click(); URL.revokeObjectURL(url); }\n\n    function alertTrack(){ const v=el('#trackId').value.trim(); if(!v) return alert('Please enter Application ID'); const all=JSON.parse(localStorage.getItem('eseva_apps')||'[]'); const found=all.find(x=>x.applicationId===v); alert(found?`Status for ${v}: Under Verification`:`No record found for ${v} (saved in this browser).`); }\n\n    (function init(){ document.getElementById('year').textContent=new Date().getFullYear(); setImages(); setLang(currentLang); document.getElementById('lang').addEventListener('change', e=> setLang(e.target.value)); document.getElementById('lowBtn').addEventListener('click', ()=>{ low=!low; document.getElementById('lowBtn').classList.toggle('bg-brand', low); document.getElementById('lowBtn').classList.toggle('text-white', low); setImages(); }); const setFromHash=()=>{ const h=(location.hash||'#home').replace('#',''); const target=document.getElementById(h); if(target) target.scrollIntoView({behavior:'smooth', block:'start'}); }; window.addEventListener('hashchange', setFromHash); setFromHash(); })();\n  </script>\n</body>\n</html>\n
